@@ -89,6 +89,9 @@ class ClientCreator:
         if model == "gpt-4o-2024-11-20":
             azure_deployment = "gpt-4o"
             azure_endpoint = "https://agentic1.openai.azure.com/"  # Also on agentic2
+        if model == "gpt-4.1":
+            azure_deployment = "gpt-4.1"
+            azure_endpoint = "https://aipmaker.openai.azure.com/"
         # elif model == "o1-preview":
         #     azure_deployment = "o1-preview-2024-09-12-eval"
         #     azure_endpoint = "https://agentic2.openai.azure.com/"
