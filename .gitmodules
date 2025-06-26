@@ -1,0 +1,3 @@
+[submodule "agents/sophiella"]
+	path = agents/sophiella
+	url = https://github.com/chosen8823/sophiella-core-agent.git
