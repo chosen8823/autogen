@@ -1,0 +1,63 @@
+# Build artifacts
+build/
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.vst3
+*.exe
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# IDE files
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln
+*.vcxproj*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+.pytest_cache/
+.coverage
+
+# Models (can be large)
+*.pt
+*.onnx
+*.pb
+models/
+
+# macOS
+.DS_Store
+*.app
+
+# Windows
+Thumbs.db
+*.lnk
+
+# VST3 SDK (should be cloned separately)
+vst3sdk/
+
+# Neural inference libraries (should be installed separately)
+libtorch/
+onnxruntime/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
