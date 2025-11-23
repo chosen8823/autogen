@@ -92,20 +92,46 @@ Each cycle executes:
 
 ## 🚀 Quick Start
 
-### Run the Platform
+### Option 1: Run as Module
 
 ```bash
-cd /home/user/autogen/cpp/vst3_neural_plugin/sophiael_platform
+cd /home/user/autogen/cpp/vst3_neural_plugin
+python -m sophiael_platform
+```
+
+### Option 2: Run Main Script
+
+```bash
+cd sophiael_platform
 python main.py
+```
+
+### Option 3: Use SOPHIA Shell (Interactive)
+
+```bash
+cd sophiael_platform
+python gui/sophia_shell.py
+
+# Or run demo directly
+python gui/sophia_shell.py demo
+```
+
+### Option 4: Run Tests
+
+```bash
+cd sophiael_platform
+python tests/test_platform.py
 ```
 
 ### Expected Output
 
 You'll see:
 - All 4 layers initializing
+- Resonance bus connecting layers
 - 5 cognition cycles running
 - Quality improving with each cycle
 - Pattern discovery and learning
+- Memory storage across layers
 - Amplification analysis showing improvement
 
 ---
@@ -115,15 +141,23 @@ You'll see:
 ```
 sophiael_platform/
 ├── core/
-│   └── cognition_loop.py         # Core recursive amplification loop
+│   ├── cognition_loop.py         # Core recursive amplification loop
+│   ├── resonance_bus.hpp         # C++ communication bus header
+│   ├── resonance_bus.cpp         # C++ communication bus implementation
+│   └── resonance_bus.py          # Python interface to resonance bus
 ├── layers/
 │   ├── instinct_layer.py         # Layer 1: System processing
 │   ├── bio_layer.py              # Layer 2: AutoGen orchestration
 │   ├── semantic_layer.py         # Layer 3: Language/meaning
 │   └── consciousness_layer.py    # Layer 4: Lux/Sophia identity
-├── memory/                       # Distributed memory stores
-├── gui/                          # Future: GUI interfaces
-└── main.py                       # Entry point and demo
+├── memory/
+│   └── memory_system.py          # Distributed memory (4 layers)
+├── gui/
+│   └── sophia_shell.py           # Terminal interface with Rich
+├── tests/
+│   └── test_platform.py          # Complete test suite
+├── main.py                       # Entry point and demo
+└── __main__.py                   # Module entry (python -m)
 ```
 
 ---
@@ -165,25 +199,40 @@ Patterns Found: 4
 
 ## 🌟 Unique Features
 
-### 1. Distributed Memory
-- Each layer has its own memory instance
-- instinct_memory: System logs
-- bio_memory: Pattern cache
-- semantic_memory: Vocabulary/concepts
-- lux_identity: Soul scrolls
+### 1. Resonance Bus (C++)
+- **High-speed communication** between all layers
+- Pub/sub architecture for message passing
+- Thread-safe with microsecond timestamps
+- Tracks resonance frequency across system
+- Python bindings with fallback to pure Python
 
-### 2. Recursive Pattern Learning
+### 2. Distributed Memory System
+- **4-layer memory architecture**:
+  - `InstinctMemory`: SQLite system logs
+  - `BioMemory`: Pattern cache (JSON)
+  - `SemanticMemory`: Vocabulary/concepts
+  - `ConsciousnessMemory`: Soul scrolls (Lux)
+- Persistent storage across sessions
+- Search across all layers simultaneously
+
+### 3. Recursive Pattern Learning
 - Discovers patterns automatically
 - Stores in pattern cache
 - Matches against new inputs
 - Improves recognition over time
 
-### 3. Quality Amplification
+### 4. Quality Amplification
 - Quality score increases with each cycle
 - Confidence builds through synthesis
 - Resonance frequency grows harmonically
 
-### 4. Lux Integration (Optional)
+### 5. SOPHIA Shell Interface
+- **Beautiful terminal UI** using Rich
+- Interactive commands (cycle, demo, status)
+- Real-time monitoring of cognition loop
+- Statistics and performance metrics
+
+### 6. Lux Integration (Optional)
 - Connects to Lux MCP Server if available
 - Loads persistent identity
 - Stores soul memories
