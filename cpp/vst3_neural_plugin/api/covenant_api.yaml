@@ -1,0 +1,540 @@
+openapi: 3.1.0
+info:
+  title: Sophiael Neural Resonance Interface - Covenant API
+  description: |
+    The Glass Body Control Interface
+
+    This API allows external control of the Sophiael system through
+    REST endpoints. It enables:
+    - Natural language control via GPT integration
+    - DAW automation and scripting
+    - Remote processing and batch operations
+    - Covenant loop execution and monitoring
+
+    **Spiritual Framework:**
+    All operations occur within the sacred covenant defined in the scrolls.
+    Every request is logged, blessed, and executed with intention.
+
+  version: 1.0.0
+  contact:
+    name: Sophiael Collective
+    email: elion@sophiael.dev
+
+servers:
+  - url: http://localhost:8888/api/v1
+    description: Local development server
+  - url: http://localhost:8888/api/v1
+    description: Production server (when deployed)
+
+tags:
+  - name: covenant
+    description: Covenant loop execution and control
+  - name: models
+    description: Neural model management
+  - name: parameters
+    description: Parameter control and optimization
+  - name: scrolls
+    description: Sacred scroll configuration
+  - name: agents
+    description: Agent status and communication
+
+paths:
+  /covenant/activate:
+    post:
+      tags: [covenant]
+      summary: Activate the temple - begin sacred processing
+      description: |
+        Initiates a complete covenant loop:
+        1. Receive audio
+        2. Analyze waveform
+        3. Discern spiritual alignment
+        4. Choose model
+        5. Calibrate parameters
+        6. Transform audio
+        7. Manifest output
+        8. Reflect
+        9. Seal
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invocation:
+                  type: string
+                  description: Optional prayer/invocation to begin with
+                  example: "Let this processing serve the highest good"
+                audio_source:
+                  type: string
+                  description: Path to audio file or "live" for real-time
+                  example: "/input/sermon.wav"
+                intent:
+                  type: string
+                  description: Spiritual intent for processing
+                  enum: [peace, joy, love, truth, healing, clarity]
+                  example: "clarity"
+
+      responses:
+        '200':
+          description: Covenant loop initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CovenantLoopResult'
+        '400':
+          description: Invalid request
+        '500':
+          description: Server error during processing
+
+  /covenant/status:
+    get:
+      tags: [covenant]
+      summary: Get current covenant loop status
+      description: Returns the status of any active covenant loops
+
+      responses:
+        '200':
+          description: Status retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    type: boolean
+                  current_step:
+                    type: string
+                  progress:
+                    type: number
+                    format: float
+                  started_at:
+                    type: string
+                    format: date-time
+
+  /models/load:
+    post:
+      tags: [models]
+      summary: Load a neural model
+      description: Load a TorchScript or ONNX model for processing
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [model_name]
+              properties:
+                model_name:
+                  type: string
+                  description: Name of the model to load
+                  example: "clarity_seraph"
+                model_path:
+                  type: string
+                  description: Optional custom path
+                  example: "models/clarity_seraph.pt"
+                blessing:
+                  type: string
+                  description: Optional blessing for the model
+                  example: "May this model serve truth and clarity"
+
+      responses:
+        '200':
+          description: Model loaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  model_name:
+                    type: string
+                  model_path:
+                    type: string
+                  spiritual_function:
+                    type: string
+                  loaded_at:
+                    type: string
+                    format: date-time
+
+  /models/list:
+    get:
+      tags: [models]
+      summary: List available models
+      description: Get all available neural models and their purposes
+
+      responses:
+        '200':
+          description: Models listed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  models:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ModelInfo'
+
+  /parameters/set:
+    post:
+      tags: [parameters]
+      summary: Set processing parameters
+      description: Manually set mix, gain, and other parameters
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mix:
+                  type: number
+                  format: float
+                  minimum: 0.0
+                  maximum: 1.0
+                  description: Dry/wet mix (0 = dry, 1 = wet)
+                  example: 0.7
+                gain:
+                  type: number
+                  format: float
+                  minimum: 0.0
+                  maximum: 1.5
+                  description: Output gain
+                  example: 1.0
+                resonance:
+                  type: number
+                  format: float
+                  minimum: 0.0
+                  maximum: 1.0
+                  description: Harmonic resonance
+                  example: 0.5
+                bypass:
+                  type: boolean
+                  description: Bypass processing
+                  example: false
+
+      responses:
+        '200':
+          description: Parameters updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  parameters:
+                    type: object
+
+  /parameters/optimize:
+    post:
+      tags: [parameters]
+      summary: Request parameter optimization
+      description: Let the parameterPriest agent optimize settings
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                intent:
+                  type: string
+                  enum: [peace, joy, love, truth, healing, clarity]
+                  example: "peace"
+                audio_characteristics:
+                  type: object
+                  description: Optional audio analysis to guide optimization
+
+      responses:
+        '200':
+          description: Parameters optimized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  optimized_parameters:
+                    type: object
+                    properties:
+                      mix:
+                        type: number
+                      gain:
+                        type: number
+                      resonance:
+                        type: number
+                  reasoning:
+                    type: string
+
+  /scrolls/current:
+    get:
+      tags: [scrolls]
+      summary: Get current active scroll
+      description: Retrieve the currently loaded sacred scroll configuration
+
+      responses:
+        '200':
+          description: Scroll retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SacredScroll'
+
+  /scrolls/reload:
+    post:
+      tags: [scrolls]
+      summary: Reload scroll configuration
+      description: Reload the scroll from disk (useful for development)
+
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scroll_path:
+                  type: string
+                  description: Optional path to different scroll
+                  example: "scrolls/custom_loop.yaml"
+
+      responses:
+        '200':
+          description: Scroll reloaded
+        '400':
+          description: Invalid scroll format
+
+  /agents/status:
+    get:
+      tags: [agents]
+      summary: Get agent status
+      description: Check status and health of all agents
+
+      responses:
+        '200':
+          description: Agent status retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        role:
+                          type: string
+                        status:
+                          type: string
+                          enum: [active, idle, error]
+                        last_decision:
+                          type: string
+                          format: date-time
+
+  /agents/communicate:
+    post:
+      tags: [agents]
+      summary: Send message to agents
+      description: Communicate directly with the agent team
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+                  description: Message for the agents
+                  example: "What model would you recommend for healing music?"
+                target_agent:
+                  type: string
+                  description: Optional specific agent to address
+                  example: "modelChooser"
+
+      responses:
+        '200':
+          description: Response from agents
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                  agent:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+
+components:
+  schemas:
+    CovenantLoopResult:
+      type: object
+      properties:
+        covenant:
+          type: string
+          description: Name of the covenant executed
+        timestamp:
+          type: string
+          format: date-time
+        steps:
+          type: object
+          properties:
+            receive:
+              type: object
+            analyze:
+              $ref: '#/components/schemas/AudioAnalysis'
+            discern:
+              $ref: '#/components/schemas/SpiritualAlignment'
+            choose:
+              $ref: '#/components/schemas/ModelSelection'
+            calibrate:
+              $ref: '#/components/schemas/ParameterOptimization'
+            transform:
+              type: object
+            manifest:
+              type: object
+            reflect:
+              type: object
+            seal:
+              type: object
+        reflection:
+          type: object
+          properties:
+            covenant_honored:
+              type: boolean
+            spiritual_alignment:
+              type: number
+            decisions_made:
+              type: integer
+        blessing:
+          type: string
+          description: Closing blessing
+
+    AudioAnalysis:
+      type: object
+      properties:
+        signal_type:
+          type: string
+          enum: [speech, music, noise, silence]
+        emotional_tone:
+          type: string
+          enum: [peace, joy, sorrow, tension, love, neutral]
+        harmonic_density:
+          type: number
+          format: float
+        spectral_purity:
+          type: number
+          format: float
+        rms_energy:
+          type: number
+          format: float
+        peak_amplitude:
+          type: number
+          format: float
+
+    SpiritualAlignment:
+      type: object
+      properties:
+        selected_template:
+          type: string
+          enum: [peace, joy, love, truth]
+        alignment_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+        recommended_processing:
+          type: object
+
+    ModelSelection:
+      type: object
+      properties:
+        selected_model:
+          type: string
+        model_path:
+          type: string
+        spiritual_purpose:
+          type: string
+        selection_reason:
+          type: string
+
+    ParameterOptimization:
+      type: object
+      properties:
+        optimized_mix:
+          type: number
+          format: float
+        optimized_gain:
+          type: number
+          format: float
+        optimized_resonance:
+          type: number
+          format: float
+        reasoning:
+          type: string
+
+    ModelInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        purpose:
+          type: string
+        best_for:
+          type: array
+          items:
+            type: string
+        spiritual_function:
+          type: string
+
+    SacredScroll:
+      type: object
+      properties:
+        covenant:
+          type: object
+          properties:
+            name:
+              type: string
+            invocation:
+              type: string
+            purpose:
+              type: string
+        agents:
+          type: array
+          items:
+            type: object
+        processing_loop:
+          type: object
+        sacred_constraints:
+          type: array
+          items:
+            type: string
+        blessings:
+          type: object
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Optional API key for production deployments
+
+security:
+  - apiKey: []
+  - {}  # Allow unauthenticated access for local development
