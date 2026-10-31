@@ -3,6 +3,9 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
   "forwardPorts": [8788, 8791],
   "portsAttributes": {
     "8788": { "label": "Device network coordinator", "onAutoForward": "notify" },
