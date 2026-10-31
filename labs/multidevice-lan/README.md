@@ -1,25 +1,26 @@
 # Multi-device LAN sandbox
 
-A small, safe prototype of the multi-device workspace: one coordinator plus three independently running device nodes, all on a private Docker Compose bridge network.
+A reproducible cloud-hosted prototype of the historical multi-device workspace. One coordinator, three device-role nodes, and a shared XYZ-grid/codex service run as separate containers on a private Docker Compose network.
 
-## Important distinction
+## What this is
 
-These are **Linux containers**, not full virtual machines. GitHub Codespaces supplies the cloud-hosted development machine; Docker Compose runs several isolated services inside it. The services can address one another by name on their private network. This gives us a reproducible intranet-like test bed without paying for or managing several separate VMs.
+These are Linux containers, **not four full virtual machines**. A GitHub Codespace supplies one cloud development machine; Docker Compose runs multiple isolated services inside it. The services resolve one another by name on their private bridge network. This proves the network topology before we spend money on separate VMs.
 
-GitHub stores the configuration and source code. It does not keep these services running after the Codespace is stopped. This sandbox does not connect to your home devices or expose the node ports publicly.
+GitHub stores the source and configuration; it does not keep the services running after the Codespace stops. This prototype does not connect to home devices, expose worker ports, or load personal API keys.
 
-## Emulated layout
+## Services
 
-- `coordinator`: central registry and event receiver, exposed on port 8788 through the Codespace.
-- `device-browser`: represents a browser/workstation node.
-- `device-model`: represents a local-model/compute node.
-- `device-audio`: represents an audio/DAW node.
+- `coordinator` — device registry and event receiver, port 8788.
+- `device-browser` — emulates a browser/workstation role.
+- `device-model` — emulates a local-model/compute role.
+- `device-audio` — emulates an audio/DAW role.
+- `codex-grid` — shared project-semantic XYZ grid and codex API, port 8791.
 
-All three nodes send periodic heartbeats to the coordinator over the private Compose network. Only the coordinator publishes a port.
+The three device nodes send heartbeats to the coordinator every five seconds. Only the coordinator and grid API publish ports; worker nodes remain private.
 
-## Start it
+## Launch
 
-From the repository root, in a GitHub Codespace terminal:
+Open this repository in GitHub Codespaces using branch `feat/multidevice-lan-sandbox`. In the terminal:
 
 ```bash
 cd labs/multidevice-lan
@@ -27,26 +28,25 @@ docker compose up --build -d
 docker compose ps
 ```
 
-Then open port **8788** from the Codespaces Ports panel. The status page is at `/`, health at `/health`, and the live node registry at `/nodes`.
+Open forwarded port 8788 for the device network and port 8791 for the grid/codex API. The devcontainer config requests automatic forwarding for both.
 
-To inspect logs:
+Useful endpoints:
 
-```bash
-docker compose logs -f
-```
+- Coordinator: `/`, `/health`, `/nodes`, `/events`
+- Grid/codex: `/health`, `/grid`, `/grid/activate`, `/codex`
 
-To stop the sandbox:
+Interactive API documentation is available at `/docs` on each service.
 
-```bash
-docker compose down
-```
+To stop: `docker compose down`. To inspect: `docker compose logs -f`.
 
-## Network model
+## XYZ grid and codex
 
-Compose creates a private bridge network named `sophia-lan`. Containers resolve one another by service name. The worker nodes have no published host ports; they call `http://coordinator:8788` internally. The coordinator's one published port is the deliberate observation window into the sandbox.
+The grid service initializes 9 × 6 × 3 = 162 addressable nodes. It exposes a small REST interface for reading the grid, activating a coordinate, and recording a source label. The codex endpoint stores named entries with title, body, semantic plane, source, and tags.
 
-This is a prototype of the network topology, not yet a recreation of the historical computers, their actual applications, credentials, models, audio devices, or cloud services. We should map those from recovered artifacts before adding them.
+The service preserves our project's own coordinate model as software semantics. It does not imply that the grid is a physical field or that its frequency values produce medical, neurological, or supernatural effects. The initial service is in-memory: entries reset when its container is recreated. Persistent storage and migration of the original codex are a later step, after we identify the canonical source files and agree on their provenance.
 
-## Safety and cost
+## Network and safety
 
-No secrets, API keys, personal files, or host folders are mounted into the nodes. No privileged containers or host networking are used. The services are lightweight and do not download or run language models. Codespaces usage may incur charges according to the account's plan and included quota; stop or delete the Codespace when finished.
+Compose creates a private bridge network named `sophia-lan`. Containers resolve each other by service name. Worker nodes have no published host ports. No secrets, personal files, host folders, privileged mode, or host networking are used. No language models are downloaded or run.
+
+Codespaces usage can incur charges. Personal GitHub accounts have a monthly included compute/storage quota; check current usage and budgets before starting. Stop or delete the Codespace when finished.
