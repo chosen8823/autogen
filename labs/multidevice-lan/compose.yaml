@@ -1,0 +1,62 @@
+services:
+  coordinator:
+    build: .
+    command: ["python", "-m", "uvicorn", "coordinator:app", "--host", "0.0.0.0", "--port", "8788"]
+    environment:
+      REGISTRY_TTL_SECONDS: "30"
+    ports:
+      - "8788:8788"
+    networks:
+      - sophia-lan
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8788/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  device-browser:
+    build: .
+    command: ["python", "node.py"]
+    environment:
+      NODE_ID: "browser-workstation"
+      NODE_ROLE: "browser"
+      COORDINATOR_URL: "http://coordinator:8788"
+    depends_on:
+      coordinator:
+        condition: service_healthy
+    networks:
+      - sophia-lan
+    restart: unless-stopped
+
+  device-model:
+    build: .
+    command: ["python", "node.py"]
+    environment:
+      NODE_ID: "model-compute"
+      NODE_ROLE: "model"
+      COORDINATOR_URL: "http://coordinator:8788"
+    depends_on:
+      coordinator:
+        condition: service_healthy
+    networks:
+      - sophia-lan
+    restart: unless-stopped
+
+  device-audio:
+    build: .
+    command: ["python", "node.py"]
+    environment:
+      NODE_ID: "audio-workstation"
+      NODE_ROLE: "audio"
+      COORDINATOR_URL: "http://coordinator:8788"
+    depends_on:
+      coordinator:
+        condition: service_healthy
+    networks:
+      - sophia-lan
+    restart: unless-stopped
+
+networks:
+  sophia-lan:
+    driver: bridge
