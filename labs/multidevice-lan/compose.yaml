@@ -6,14 +6,21 @@ services:
       REGISTRY_TTL_SECONDS: "30"
     ports:
       - "8788:8788"
-    networks:
-      - sophia-lan
+    networks: [sophia-lan]
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8788/health', timeout=2)"]
       interval: 10s
       timeout: 3s
       retries: 5
+
+  codex-grid:
+    build: .
+    command: ["python", "-m", "uvicorn", "codex_grid:app", "--host", "0.0.0.0", "--port", "8791"]
+    ports:
+      - "8791:8791"
+    networks: [sophia-lan]
+    restart: unless-stopped
 
   device-browser:
     build: .
@@ -25,8 +32,7 @@ services:
     depends_on:
       coordinator:
         condition: service_healthy
-    networks:
-      - sophia-lan
+    networks: [sophia-lan]
     restart: unless-stopped
 
   device-model:
@@ -39,8 +45,7 @@ services:
     depends_on:
       coordinator:
         condition: service_healthy
-    networks:
-      - sophia-lan
+    networks: [sophia-lan]
     restart: unless-stopped
 
   device-audio:
@@ -53,8 +58,7 @@ services:
     depends_on:
       coordinator:
         condition: service_healthy
-    networks:
-      - sophia-lan
+    networks: [sophia-lan]
     restart: unless-stopped
 
 networks:
